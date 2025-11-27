@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Etna Excurtion – Extreme Luxury Volcano Experiences</title>
+  <meta name="description" content="Etna Excurtion: Escursioni premium sull'Etna e Gole Alcantara, powered by Dream Island. Tour estremi, crateri e natura selvaggia." />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="theme-color" content="#050505" />
+
+  <!-- Configurazione Tailwind per colori personalizzati -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            magma: '#ff4500',
+            lava: '#c0392b',
+            charcoal: '#050505',
+            gyg: '#FF5533',
+            tripadvisor: '#34E0A1'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* --- DESIGN TOKENS --- */
+    :root {
+      --color-primary: #ff4500;
+      --shadow-glow: 0 0 24px rgba(255, 69, 0, 0.6);
+      --transition-main: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { 
+        font-family: 'Montserrat', sans-serif; 
+        background-color: #050505; 
+        overflow-x: hidden;
+    }
+
+    /* --- COMPONENTI CUSTOM --- */
+    .btn-magma {
+      background-image: linear-gradient(135deg, var(--color-primary), #c0392b);
+      transition: all var(--transition-main);
+    }
+    .btn-magma:hover {
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-2px);
+    }
+    .btn-outline-magma:hover {
+        border-color: var(--color-primary);
+        background-color: rgba(255, 69, 0, 0.1);
+    }
+    
+    .btn-gyg {
+        background-color: #FF5533;
+        color: white;
+        transition: all var(--transition-main);
+    }
+    .btn-gyg:hover {
+        background-color: #e04e2e;
+        box-shadow: 0 0 15px rgba(255, 85, 51, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .btn-trip {
+        background-color: #00AA6C; /* Tripadvisor Green */
+        color: white;
+        transition: all var(--transition-main);
+    }
+    .btn-trip:hover {
+        background-color: #008f5b;
+        box-shadow: 0 0 15px rgba(0, 170, 108, 0.4);
+        transform: translateY(-2px);
+    }
+
+    /* CARD CON OVERLAY */
+    .excursion-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+        transition: all var(--transition-main);
+    }
+    .excursion-card:hover::after {
+        background: linear-gradient(to top, rgba(0,0,0,1) 10%, rgba(255,69,0,0.2) 100%);
+    }
+
+    /* ANIMAZIONI */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .no-scroll { overflow: hidden; }
+
+    /* SCROLLBAR NASCOSTA PER CAROSELLO */
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="text-gray-200">
+  <div class="min-h-screen flex flex-col">
+    
+    <!-- NAVBAR -->
+    <header class="fixed top-0 inset-x-0 z-50 h-20 flex items-center bg-black/95 backdrop-blur-md transition-all duration-300 border-b border-white/5" id="navbar">
+      <div class="container mx-auto px-6 flex justify-between items-center w-full relative z-50">
+        <!-- Brand -->
+        <a href="#" class="flex items-center space-x-3 group">
+          <span class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-600 to-red-700 shadow-xl shadow-orange-700/50 group-hover:scale-110 transition duration-300"></span>
+          <div class="flex flex-col">
+            <span class="text-xl font-extrabold text-white tracking-widest group-hover:text-magma transition duration-300">ETNA EXCURTION</span>
+            <span class="text-[10px] uppercase text-gray-400 tracking-wider">POWERED BY DREAM ISLAND</span>
+          </div>
+        </a>
+        
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center space-x-8 text-xs font-bold uppercase tracking-widest">
+          <a href="#escursioni" class="hover:text-magma transition duration-300">Escursioni</a>
+          <a href="#guide" class="hover:text-magma transition duration-300">Territorio</a>
+          <a href="#reviews" class="hover:text-magma transition duration-300">Recensioni</a>
+          <a href="#blog" class="hover:text-magma transition duration-300">Blog</a>
+          <a href="#booking" class="btn-magma text-white px-6 py-2.5 rounded-full shadow-lg shadow-orange-900/20 hover:shadow-orange-600/40 transition duration-300" id="openBookingCTA">Prenota Ora</a>
+        </nav>
+
+        <!-- Mobile Toggle -->
+        <button class="lg:hidden p-2 focus:outline-none z-50" id="navToggle" aria-label="Menu">
+          <span class="block w-7 h-0.5 bg-white relative transition duration-300"></span>
+          <span class="block w-7 h-0.5 bg-white relative mt-2 transition duration-300"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="fixed inset-0 bg-black/98 backdrop-blur-xl flex flex-col justify-center items-center z-40 transform translate-x-full transition-transform duration-500 ease-in-out lg:hidden" id="navMobile">
+      <a href="#escursioni" class="text-3xl py-4 font-bold uppercase text-white hover:text-magma transition duration-300 mobile-link">Escursioni</a>
+      <a href="#guide" class="text-3xl py-4 font-bold uppercase text-white hover:text-magma transition duration-300 mobile-link">Territorio</a>
+      <a href="#reviews" class="text-3xl py-4 font-bold uppercase text-white hover:text-magma transition duration-300 mobile-link">Recensioni</a>
+      <a href="#blog" class="text-3xl py-4 font-bold uppercase text-magma transition duration-300 mobile-link">Blog</a>
+      <a href="#booking" class="text-3xl py-4 font-bold uppercase text-white hover:text-magma transition duration-300 mobile-link" id="mobileBookingLink">Prenota Ora</a>
+    </div>
+
+    <main class="flex-grow pt-20">
+      
+      <!-- HERO SECTION -->
+      <section class="min-h-[85vh] relative flex items-center justify-center overflow-hidden">
+        <!-- Background statico o video -->
+        <div class="absolute inset-0 z-0">
+             <img src="img/etna-eruz.png" onerror="this.src='https://images.unsplash.com/photo-1465911817134-741b5e473a1b?q=80&w=2074&auto=format&fit=crop'" class="w-full h-full object-cover opacity-60" alt="Etna Eruption">
+             <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#050505]"></div>
+        </div>
+        
+        <div class="hero-content relative z-20 text-center max-w-5xl px-4 py-16 reveal">
+          <div class="inline-flex items-center space-x-2 px-4 py-1.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] mb-6 animate-pulse">
+            <i class="fas fa-certificate text-magma"></i>
+            <span class="text-gray-200">Luxury Volcano Experience</span>
+          </div>
+          <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-none mb-6 tracking-tighter drop-shadow-2xl">
+            Beyond<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">The Crater</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+            Esplora l'Etna e l'Alcantara con le guide più esclusive della Sicilia. <br>Dove il lusso incontra la natura estrema.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#escursioni" class="btn-magma text-white px-10 py-4 rounded-full text-sm font-bold tracking-widest uppercase transition duration-300 w-full sm:w-auto text-center">Inizia l'Avventura</a>
+            <a href="https://wa.me/393481574899" target="_blank" class="group flex items-center gap-2 text-white px-8 py-4 rounded-full text-sm font-bold tracking-widest uppercase border border-white/20 hover:bg-white/10 transition duration-300 w-full sm:w-auto justify-center">
+                <i class="fab fa-whatsapp text-green-400 text-lg group-hover:scale-125 transition"></i> Chat Veloce
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- GUIDA -->
+      <section class="py-20 md:py-32 relative overflow-hidden" id="guide">
+        <!-- Decorative bg elements -->
+        <div class="absolute top-0 left-0 w-64 h-64 bg-orange-600/10 rounded-full blur-[100px]"></div>
+
+        <div class="container mx-auto px-6 reveal relative z-10">
+          <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+            <div class="max-w-2xl">
+                <div class="text-xs text-magma uppercase tracking-[0.25em] mb-3 font-bold">Territorio</div>
+                <h2 class="text-4xl md:text-5xl font-black text-white uppercase leading-tight">Il Dominio del<br>Vulcano</h2>
+            </div>
+            <p class="text-gray-400 mt-6 md:mt-0 max-w-md text-sm leading-relaxed border-l-2 border-magma pl-6">
+              L'Etna non è solo una montagna, è un ecosistema vivo. Dai crateri sommitali a 3300m fino alle gelide acque dell'Alcantara.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card Guida 1 -->
+            <div class="group relative bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/5 hover:border-magma/50 transition duration-500">
+              <div class="absolute top-6 right-6 text-4xl text-white/10 group-hover:text-magma/20 transition"><i class="fas fa-mountain"></i></div>
+              <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Nord</h3>
+              <p class="text-gray-400 text-sm mb-6 h-12">Il lato selvaggio. Foreste antiche, la colata distruttiva del 2002 e panorami mozzafiato.</p>
+              <div class="h-1 w-12 bg-gray-700 group-hover:w-full group-hover:bg-magma transition-all duration-500 rounded-full"></div>
+            </div>
+            <!-- Card Guida 2 -->
+            <div class="group relative bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/5 hover:border-magma/50 transition duration-500">
+               <div class="absolute top-6 right-6 text-4xl text-white/10 group-hover:text-magma/20 transition"><i class="fas fa-tram"></i></div>
+              <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Sud</h3>
+              <p class="text-gray-400 text-sm mb-6 h-12">Il lato lunare. La Funivia, i crateri Barbagallo e la vista sul golfo di Catania.</p>
+              <div class="h-1 w-12 bg-gray-700 group-hover:w-full group-hover:bg-magma transition-all duration-500 rounded-full"></div>
+            </div>
+            <!-- Card Guida 3 -->
+            <div class="group relative bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/5 hover:border-teal-500/50 transition duration-500">
+               <div class="absolute top-6 right-6 text-4xl text-white/10 group-hover:text-teal-400/20 transition"><i class="fas fa-water"></i></div>
+              <h3 class="text-2xl font-bold text-teal-400 mb-2 uppercase italic">Alcantara</h3>
+              <p class="text-gray-400 text-sm mb-6 h-12">Il canyon di basalto. Acque gelide, prismi di pietra lavica e natura rigogliosa.</p>
+              <div class="h-1 w-12 bg-gray-700 group-hover:w-full group-hover:bg-teal-400 transition-all duration-500 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESCURSIONI -->
+      <section class="py-20 bg-charcoal relative" id="escursioni">
+        <div class="container mx-auto px-6">
+          <header class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-6xl font-black text-white uppercase mb-4 tracking-tight">Le Nostre <span class="text-magma">Experiences</span></h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gray-500 to-transparent mx-auto"></div>
+          </header>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
+            
+            <!-- EXCURSION CARD COMPONENT -->
+            <!-- Card 1 -->
+            <a href="#booking" onclick="prefillSelect('Etna Summit Craters')" class="excursion-card group relative h-[500px] rounded-[2rem] overflow-hidden block reveal">
+              <img src="img/etna-eruz.png" onerror="this.src='https://images.unsplash.com/photo-1548231776-664f9b88417c?auto=format&fit=crop&q=80'" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Etna Summit">
+              <div class="absolute top-6 left-6 z-20 flex gap-2">
+                 <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-white/10">Hard Trekking</span>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-8 z-20 translate-y-2 group-hover:translate-y-0 transition duration-500">
+                <h3 class="text-3xl font-black text-white mb-2 uppercase italic leading-none">Summit Craters 3300m</h3>
+                <p class="text-gray-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100 max-w-sm">Trekking guidato fino alla cima del vulcano attivo più alto d'Europa.</p>
+                <div class="flex justify-between items-end border-t border-white/20 pt-4">
+                  <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-gray-300">
+                    <span><i class="fas fa-clock text-magma mr-1"></i> 6h</span>
+                    <span><i class="fas fa-hiking text-magma mr-1"></i> 10km</span>
+                  </div>
+                  <span class="text-3xl font-black text-white">€110</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Card 2 -->
+            <a href="#booking" onclick="prefillSelect('Etna & Alcantara')" class="excursion-card group relative h-[500px] rounded-[2rem] overflow-hidden block reveal delay-100">
+              <img src="img/1.png" onerror="this.src='https://images.unsplash.com/photo-1596556556083-d52251d1484b?auto=format&fit=crop&q=80'" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Etna Alcantara">
+              <div class="absolute top-6 left-6 z-20 flex gap-2">
+                 <span class="bg-magma/90 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-magma/40">Best Seller</span>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-8 z-20 translate-y-2 group-hover:translate-y-0 transition duration-500">
+                <h3 class="text-3xl font-black text-white mb-2 uppercase italic leading-none">Etna & Alcantara Combo</h3>
+                <p class="text-gray-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100 max-w-sm">La giornata perfetta: esplorazione vulcanica al mattino e fresche gole al pomeriggio.</p>
+                <div class="flex justify-between items-end border-t border-white/20 pt-4">
+                  <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-gray-300">
+                    <span><i class="fas fa-clock text-magma mr-1"></i> 8h</span>
+                    <span><i class="fas fa-bus text-magma mr-1"></i> Full Day</span>
+                  </div>
+                  <span class="text-3xl font-black text-white">€95</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Card 3 -->
+            <a href="#booking" onclick="prefillSelect('Jeep Tour 4x4')" class="excursion-card group relative h-[400px] rounded-[2rem] overflow-hidden block reveal">
+              <img src="img/jeep-tour-4x4.png" onerror="this.src='https://images.unsplash.com/photo-1533230607842-8c1d550000a6?auto=format&fit=crop&q=80'" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Jeep Tour">
+              <div class="absolute top-6 left-6 z-20">
+                 <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-white/10">Easy / Family</span>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                <h3 class="text-2xl font-black text-white mb-1 uppercase italic">Jeep 4x4 Adventure</h3>
+                <div class="flex justify-between items-center mt-4">
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-300"><i class="fas fa-clock text-magma mr-1"></i> 4h</span>
+                  <span class="text-2xl font-black text-magma">€65</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Card 4 -->
+            <a href="#booking" onclick="prefillSelect('Sunset Trekking')" class="excursion-card group relative h-[400px] rounded-[2rem] overflow-hidden block reveal delay-100">
+              <img src="img/aperitiv.png" onerror="this.src='https://images.unsplash.com/photo-1444926526868-b80c10b7b134?auto=format&fit=crop&q=80'" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Sunset">
+              <div class="absolute top-6 left-6 z-20">
+                 <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-white/10">Romantic</span>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                <h3 class="text-2xl font-black text-white mb-1 uppercase italic">Sunset & Aperitivo</h3>
+                <div class="flex justify-between items-center mt-4">
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-300"><i class="fas fa-wine-glass text-magma mr-1"></i> 5h</span>
+                  <span class="text-2xl font-black text-magma">€75</span>
+                </div>
+              </div>
+            </a>
+
+          </div>
+          
+          <div class="text-center mt-12">
+             <button id="loadMoreBtn" class="text-gray-500 hover:text-white text-xs uppercase tracking-widest font-bold border-b border-gray-600 pb-1 transition">Mostra tutte le 8 escursioni</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPER REVIEWS SECTION (REDESIGNED) -->
+      <section class="py-24 bg-[#0a0a0a] relative overflow-hidden" id="reviews">
+        <!-- Background Effects -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-magma/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-teal-900/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 reveal">
+          
+          <!-- 1. DASHBOARD HEADER -->
+          <div class="flex flex-col lg:flex-row items-center justify-between mb-16 gap-10">
+            <div class="text-center lg:text-left max-w-xl">
+               <div class="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-magma">
+                  <i class="fas fa-heart"></i> Social Proof
+               </div>
+               <h2 class="text-4xl md:text-5xl font-black text-white uppercase leading-none mb-4">
+                 Eccellenza <br><span class="text-gray-500">Certificata.</span>
+               </h2>
+               <p class="text-gray-400 text-lg">
+                 Non fidarti solo delle nostre parole. Leggi le storie di chi ha vissuto l'eruzione da vicino.
+               </p>
+            </div>
+
+            <!-- Aggregate Score Card -->
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl flex flex-col md:flex-row items-center gap-8 shadow-2xl relative overflow-hidden">
+               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-magma via-yellow-500 to-green-500"></div>
+               <div class="text-center">
+                  <div class="text-6xl font-black text-white leading-none">4.9</div>
+                  <div class="text-yellow-500 text-sm mt-1">★★★★★</div>
+                  <div class="text-gray-500 text-[10px] uppercase tracking-wider mt-1">Media Voti</div>
+               </div>
+               <div class="w-px h-16 bg-white/10 hidden md:block"></div>
+               <div class="grid grid-cols-1 gap-4 w-full md:w-auto">
+                  <div class="flex items-center gap-3 text-sm text-gray-300">
+                     <i class="fab fa-google text-white text-lg w-6 text-center"></i> 
+                     <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden"><div class="h-full bg-white w-[98%]"></div></div>
+                     <span class="font-bold">5.0</span>
+                  </div>
+                  <!-- TripAdvisor SVG -->
+                  <div class="flex items-center gap-3 text-sm text-gray-300">
+                     <div class="w-6 flex justify-center">
+                        <svg class="h-5 w-5 text-[#34E0A1]" viewBox="0 0 24 24" fill="currentColor">
+                           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-4-4.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5S5.5 8.62 5.5 10 6.62 12.5 8 12.5zm0-3c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm8 3c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5S13.5 8.62 13.5 10 14.62 12.5 16 12.5zm0-3c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm-4-1.5c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5z"/>
+                        </svg>
+                     </div>
+                     <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden"><div class="h-full bg-[#34E0A1] w-[96%]"></div></div>
+                     <span class="font-bold">4.9</span>
+                  </div>
+                  <!-- GYG SVG -->
+                  <div class="flex items-center gap-3 text-sm text-gray-300">
+                     <div class="w-6 flex justify-center">
+                        <svg class="h-5 w-auto text-[#FF5533]" viewBox="0 0 100 30" fill="currentColor">
+                           <path d="M12.5,0 C5.6,0 0,5.6 0,12.5 C0,19.4 5.6,25 12.5,25 C18,25 22.8,21.5 24.4,16.5 L19.2,16.5 C18,19 15.5,20.8 12.5,20.8 C7.9,20.8 4.2,17.1 4.2,12.5 C4.2,7.9 7.9,4.2 12.5,4.2 C15.5,4.2 18,6 19.2,8.5 L24.4,8.5 C22.8,3.5 18,0 12.5,0 Z M30,0 L30,25 L34.2,25 L34.2,15.8 L41.7,25 L46.9,25 L38.3,15 C42.5,14 45,10.8 45,7.5 C45,3 41,0 35,0 L30,0 Z M34.2,4.2 L35,4.2 C38.3,4.2 40.8,5.5 40.8,7.5 C40.8,9.5 38.3,10.8 35,10.8 L34.2,10.8 L34.2,4.2 Z"/>
+                        </svg>
+                     </div>
+                     <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden"><div class="h-full bg-[#FF5533] w-[94%]"></div></div>
+                     <span class="font-bold">4.8</span>
+                  </div>
+               </div>
+               <div class="text-center md:text-right">
+                  <div class="text-2xl font-bold text-white">2,150+</div>
+                  <div class="text-xs text-gray-400 uppercase tracking-wider">Recensioni</div>
+               </div>
+            </div>
+          </div>
+
+          <!-- 2. SCROLLABLE REVIEW CAROUSEL -->
+          <div class="relative group">
+             <!-- Fade laterali per indicare scroll -->
+             <div class="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none md:hidden"></div>
+             <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none md:hidden"></div>
+
+             <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar" id="reviewsContainer">
+                
+                <!-- Review 1 (GYG - Maria Teresa) -->
+                <div class="min-w-[85vw] md:min-w-[400px] bg-[#111] border border-white/5 p-8 rounded-3xl snap-center transition duration-300 hover:border-gyg/30 flex flex-col justify-between group-hover:bg-[#111]">
+                   <div>
+                      <div class="flex justify-between items-start mb-6">
+                         <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden border border-gray-600">
+                               <img src="img/1.png" alt="User" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/48x48/1f2937/ffffff?text=MT'">
+                            </div>
+                            <div>
+                               <h4 class="text-white font-bold text-sm">Maria Teresa <i class="fas fa-check-circle text-blue-400 text-xs ml-1" title="Verified Booking"></i></h4>
+                               <div class="text-xs text-gray-500 flex items-center gap-1"><img src="https://flagcdn.com/w20/it.png" class="w-4" alt="Italy"> Italia</div>
+                            </div>
+                         </div>
+                         <div class="bg-[#FF5533] text-white p-2 rounded-lg w-10 h-10 flex items-center justify-center">
+                            <!-- GYG Logo SVG White -->
+                            <svg class="h-4 w-auto fill-current" viewBox="0 0 25 25"><path d="M12.5 0C5.6 0 0 5.6 0 12.5S5.6 25 12.5 25 25 19.4 25 12.5 19.4 0 12.5 0zm0 4.2c3 0 5.5 1.5 6.7 3.8h-2.5c-1-1.3-2.5-2.1-4.2-2.1-3 0-5.4 2.4-5.4 5.4s2.4 5.4 5.4 5.4c1.7 0 3.2-.8 4.2-2.1h2.5c-1.2 2.3-3.7 3.8-6.7 3.8-4.6 0-8.3-3.7-8.3-8.3s3.7-8.3 8.3-8.3z"/></svg>
+                         </div>
+                      </div>
+                      <div class="flex text-yellow-500 text-xs mb-4">★★★★★</div>
+                      <h5 class="text-white font-bold mb-2">"Bellissimo il tour!"</h5>
+                      <p class="text-gray-400 text-sm italic leading-relaxed">
+                         "Ci siamo trovati molto bene, bellissimo il tour, molto simpatica la guida. Ha reso la giornata ancora più interessante, raccontandoci curiosità e aneddoti con entusiasmo contagioso."
+                      </p>
+                   </div>
+                   <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gray-500 uppercase font-bold tracking-widest">
+                      Tour: Etna & Alcantara
+                   </div>
+                </div>
+
+                <!-- Review 2 (GYG - Luca) -->
+                <div class="min-w-[85vw] md:min-w-[400px] bg-[#111] border border-white/5 p-8 rounded-3xl snap-center transition duration-300 hover:border-gyg/30 flex flex-col justify-between">
+                   <div>
+                      <div class="flex justify-between items-start mb-6">
+                         <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden border border-gray-600">
+                               <img src="img/2.webp" alt="User" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/48x48/1f2937/ffffff?text=L'">
+                            </div>
+                            <div>
+                               <h4 class="text-white font-bold text-sm">Luca <i class="fas fa-check-circle text-blue-400 text-xs ml-1" title="Verified Booking"></i></h4>
+                               <div class="text-xs text-gray-500 flex items-center gap-1"><img src="https://flagcdn.com/w20/it.png" class="w-4" alt="Italy"> Italia</div>
+                            </div>
+                         </div>
+                         <div class="bg-[#FF5533] text-white p-2 rounded-lg w-10 h-10 flex items-center justify-center">
+                            <svg class="h-4 w-auto fill-current" viewBox="0 0 25 25"><path d="M12.5 0C5.6 0 0 5.6 0 12.5S5.6 25 12.5 25 25 19.4 25 12.5 19.4 0 12.5 0zm0 4.2c3 0 5.5 1.5 6.7 3.8h-2.5c-1-1.3-2.5-2.1-4.2-2.1-3 0-5.4 2.4-5.4 5.4s2.4 5.4 5.4 5.4c1.7 0 3.2-.8 4.2-2.1h2.5c-1.2 2.3-3.7 3.8-6.7 3.8-4.6 0-8.3-3.7-8.3-8.3s3.7-8.3 8.3-8.3z"/></svg>
+                         </div>
+                      </div>
+                      <div class="flex text-yellow-500 text-xs mb-4">★★★★★</div>
+                      <h5 class="text-white font-bold mb-2">"Gita fantastica!"</h5>
+                      <p class="text-gray-400 text-sm italic leading-relaxed">
+                         "Gita fantastica ed emozionante. Luca, la nostra giovane guida, fantastico: si è dimostrato preparato ed informato su tutto. Salvatore simpatico e gentile. Escursione che consiglio a tutti."
+                      </p>
+                   </div>
+                   <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gray-500 uppercase font-bold tracking-widest">
+                      Tour: Summit Craters
+                   </div>
+                </div>
+
+                <!-- Review 3 (TripAdvisor - General) -->
+                <div class="min-w-[85vw] md:min-w-[400px] bg-[#111] border border-white/5 p-8 rounded-3xl snap-center transition duration-300 hover:border-tripadvisor/30 flex flex-col justify-between">
+                   <div>
+                      <div class="flex justify-between items-start mb-6">
+                         <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden border border-gray-600">
+                               <img src="img/aperitiv.png" alt="User" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/48x48/1f2937/ffffff?text=GB'">
+                            </div>
+                            <div>
+                               <h4 class="text-white font-bold text-sm">Giulia Bianchi <i class="fas fa-check-circle text-blue-400 text-xs ml-1" title="Verified Booking"></i></h4>
+                               <div class="text-xs text-gray-500 flex items-center gap-1"><img src="https://flagcdn.com/w20/it.png" class="w-4" alt="IT"> Italia</div>
+                            </div>
+                         </div>
+                         <div class="bg-[#00AA6C] text-white p-2 rounded-lg w-10 h-10 flex items-center justify-center">
+                            <!-- TA Logo SVG White -->
+                            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-4-4.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5S5.5 8.62 5.5 10 6.62 12.5 8 12.5zm0-3c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm8 3c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5S13.5 8.62 13.5 10 14.62 12.5 16 12.5zm0-3c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm-4-1.5c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5z"/></svg>
+                         </div>
+                      </div>
+                      <div class="flex text-yellow-500 text-xs mb-4">★★★★★</div>
+                      <h5 class="text-white font-bold mb-2">"Semplicemente perfetto"</h5>
+                      <p class="text-gray-400 text-sm italic leading-relaxed">
+                         "Semplicemente perfetto. Consigliatissimo. Dream Island è il tour operator locale che ti aiuta a vivere un'esperienza unica, lontano dal turismo di massa."
+                      </p>
+                   </div>
+                   <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gray-500 uppercase font-bold tracking-widest">
+                      Tour: Sunset Trekking
+                   </div>
+                </div>
+
+                 <!-- Review 4 (GYG - Sharhom) -->
+                <div class="min-w-[85vw] md:min-w-[400px] bg-[#111] border border-white/5 p-8 rounded-3xl snap-center transition duration-300 hover:border-gyg/30 flex flex-col justify-between">
+                   <div>
+                      <div class="flex justify-between items-start mb-6">
+                         <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden border border-gray-600">
+                               <img src="img/jeep-tour-4x4.png" alt="User" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/48x48/1f2937/ffffff?text=S'">
+                            </div>
+                            <div>
+                               <h4 class="text-white font-bold text-sm">Sharhom <i class="fas fa-check-circle text-blue-400 text-xs ml-1" title="Verified Booking"></i></h4>
+                               <div class="text-xs text-gray-500 flex items-center gap-1"><img src="https://flagcdn.com/w20/it.png" class="w-4" alt="FR"> Italia</div>
+                            </div>
+                         </div>
+                         <div class="bg-[#FF5533] text-white p-2 rounded-lg w-10 h-10 flex items-center justify-center">
+                            <svg class="h-4 w-auto fill-current" viewBox="0 0 25 25"><path d="M12.5 0C5.6 0 0 5.6 0 12.5S5.6 25 12.5 25 25 19.4 25 12.5 19.4 0 12.5 0zm0 4.2c3 0 5.5 1.5 6.7 3.8h-2.5c-1-1.3-2.5-2.1-4.2-2.1-3 0-5.4 2.4-5.4 5.4s2.4 5.4 5.4 5.4c1.7 0 3.2-.8 4.2-2.1h2.5c-1.2 2.3-3.7 3.8-6.7 3.8-4.6 0-8.3-3.7-8.3-8.3s3.7-8.3 8.3-8.3z"/></svg>
+                         </div>
+                      </div>
+                      <div class="flex text-yellow-500 text-xs mb-4">★★★★★</div>
+                      <h5 class="text-white font-bold mb-2">"Panorama incredibile"</h5>
+                      <p class="text-gray-400 text-sm italic leading-relaxed">
+                         "Grazie a questo tour ho potuto fare la prima conoscenza del Vulcano. La sosta a Milo offre un panorama incredibile sulla costa. La guida Egidio simpaticissimo!"
+                      </p>
+                   </div>
+                   <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gray-500 uppercase font-bold tracking-widest">
+                      Tour: Jeep Tour 4x4
+                   </div>
+                </div>
+
+             </div>
+          </div>
+
+          <!-- 3. CALL TO ACTION FOOTER -->
+          <div class="mt-12 text-center">
+             <p class="text-gray-400 text-sm mb-6">Unisciti a oltre 2000 viaggiatori soddisfatti quest'anno.</p>
+             <div class="flex justify-center gap-4 flex-wrap">
+                <a href="#booking" class="btn-magma text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg shadow-orange-900/40">Prenota la tua Esperienza</a>
+                <div class="flex gap-2">
+                    <a href="https://g.page/dreamisland" target="_blank" class="px-6 py-3 rounded-full text-sm font-bold border border-white/20 hover:bg-white/10 text-white transition flex items-center gap-2"><i class="fab fa-google"></i> Google</a>
+                    <a href="https://www.tripadvisor.it/Attraction_Review-g660768-d15052054-Reviews-Dream_Island-Linguaglossa_Province_of_Catania_Sicily.html" target="_blank" class="btn-trip px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg"><i class="fab fa-tripadvisor"></i> TripAdvisor</a>
+                    <a href="https://www.getyourguide.it/dream-island-s80013/" target="_blank" class="btn-gyg px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg">GetYourGuide</a>
+                </div>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <section class="py-20 bg-charcoal" id="blog">
+        <div class="container mx-auto px-6 reveal">
+          <header class="flex justify-between items-end mb-12">
+            <div>
+               <div class="text-xs text-magma uppercase tracking-[0.25em] mb-2 font-bold">Magazine</div>
+               <h2 class="text-4xl font-black text-white uppercase">Etna <br>Journal</h2>
+            </div>
+            <a href="#" class="hidden md:block text-gray-400 hover:text-magma text-sm font-bold uppercase tracking-widest transition">Vedi Tutti <i class="fas fa-arrow-right ml-2"></i></a>
+          </header>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+             <!-- Post 1 -->
+             <article class="group cursor-pointer">
+                <div class="overflow-hidden rounded-2xl mb-4 h-64 relative">
+                   <img src="img/lavaflow.png" onerror="this.src='https://images.unsplash.com/photo-1549285090-47864e223c72?auto=format&fit=crop&w=600&q=80'" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Taormina">
+                   <div class="absolute top-4 left-4 bg-black/80 text-white text-[10px] px-2 py-1 uppercase font-bold rounded">Guida</div>
+                </div>
+                <div class="text-xs text-gray-500 mb-2">12 Ottobre 2024 • 5 min lettura</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-magma transition">Taormina: Cosa fare dopo il vulcano</h3>
+             </article>
+             <!-- Post 2 -->
+             <article class="group cursor-pointer">
+                <div class="overflow-hidden rounded-2xl mb-4 h-64 relative">
+                   <img src="img/body.png" onerror="this.src='https://images.unsplash.com/photo-1596395811342-6e27170a312d?auto=format&fit=crop&w=600&q=80'" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Alcantara">
+                   <div class="absolute top-4 left-4 bg-black/80 text-white text-[10px] px-2 py-1 uppercase font-bold rounded">Natura</div>
+                </div>
+                <div class="text-xs text-gray-500 mb-2">28 Settembre 2024 • 3 min lettura</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-magma transition">Perché l'acqua dell'Alcantara è gelida?</h3>
+             </article>
+             <!-- Post 3 -->
+             <article class="group cursor-pointer">
+                <div class="overflow-hidden rounded-2xl mb-4 h-64 relative">
+                   <img src="img/Gemini_Generated_Image_q2d9n7q2d9n7q2d9.png" onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80'" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Vino">
+                   <div class="absolute top-4 left-4 bg-black/80 text-white text-[10px] px-2 py-1 uppercase font-bold rounded">Food & Wine</div>
+                </div>
+                <div class="text-xs text-gray-500 mb-2">15 Settembre 2024 • 7 min lettura</div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-magma transition">I migliori vini vulcanici DOC</h3>
+             </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORM PRENOTAZIONE FOOTER -->
+      <section class="py-24 bg-gradient-to-t from-black to-[#0d0d0d] relative border-t border-white/5" id="booking">
+        <div class="container mx-auto px-6 reveal">
+            <div class="max-w-4xl mx-auto bg-[#050505] rounded-[3rem] shadow-2xl border border-white/5 overflow-hidden flex flex-col md:flex-row">
+                
+                <!-- Lato Contatti -->
+                <div class="md:w-1/3 bg-[#0a0a0a] p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-white/5">
+                   <div>
+                      <h3 class="text-2xl font-black text-white uppercase mb-6">Contattaci</h3>
+                      <div class="space-y-6">
+                         <div>
+                            <div class="text-xs text-gray-500 uppercase font-bold mb-1">Telefono & WhatsApp</div>
+                            <a href="tel:+393481574899" class="text-xl font-bold text-white hover:text-magma transition">(+39) 348 1574899</a>
+                         </div>
+                         <div>
+                            <div class="text-xs text-gray-500 uppercase font-bold mb-1">Email</div>
+                            <a href="mailto:info@dreamisland.it" class="text-lg text-white hover:text-magma transition">info@dreamisland.it</a>
+                         </div>
+                         <div>
+                            <div class="text-xs text-gray-500 uppercase font-bold mb-1">Orari</div>
+                            <p class="text-gray-400 text-sm">Lun - Dom <br> 08:00 - 20:00</p>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="mt-10">
+                      <div class="text-xs text-gray-500 uppercase font-bold mb-2">Seguici</div>
+                      <div class="flex gap-4">
+                         <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-magma hover:scale-110 transition"><i class="fab fa-instagram"></i></a>
+                         <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-blue-600 hover:scale-110 transition"><i class="fab fa-facebook-f"></i></a>
+                      </div>
+                   </div>
+                </div>
+
+                <!-- Lato Form -->
+                <div class="md:w-2/3 p-10 md:p-12 relative">
+                   <div class="absolute top-0 right-0 w-32 h-32 bg-magma/10 blur-[60px] rounded-full"></div>
+                   
+                   <h2 class="text-3xl font-black text-white uppercase mb-2">Inizia il Viaggio</h2>
+                   <p class="text-gray-400 text-sm mb-8">Compila il modulo per verificare la disponibilità o chiedere consigli.</p>
+
+                   <form id="bookingForm" class="space-y-5 relative z-10">
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div class="group">
+                             <input type="text" id="nome" required class="w-full bg-[#111] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition duration-300 placeholder:text-gray-600 peer">
+                             <label class="block text-xs text-gray-500 uppercase font-bold mt-2 ml-1 peer-focus:text-magma transition">Nome Completo</label>
+                          </div>
+                          <div class="group">
+                             <input type="tel" id="tel" required class="w-full bg-[#111] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition duration-300 placeholder:text-gray-600 peer">
+                             <label class="block text-xs text-gray-500 uppercase font-bold mt-2 ml-1 peer-focus:text-magma transition">Telefono</label>
+                          </div>
+                      </div>
+                      
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <div class="group">
+                             <input type="date" id="data" required class="w-full bg-[#111] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition duration-300 text-gray-400 peer">
+                             <label class="block text-xs text-gray-500 uppercase font-bold mt-2 ml-1 peer-focus:text-magma transition">Data Preferita</label>
+                          </div>
+                          <div class="group">
+                             <select id="escursioneSelect" class="w-full bg-[#111] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition duration-300 text-gray-300 peer appearance-none">
+                                  <option value="" disabled selected>Seleziona Escursione</option>
+                                  <option value="Etna Summit Craters">Etna Summit Craters (Hard)</option>
+                                  <option value="Etna & Alcantara">Etna & Alcantara (Combo)</option>
+                                  <option value="Jeep Tour 4x4">Jeep Tour 4x4 (Easy)</option>
+                                  <option value="Sunset Trekking">Sunset Trekking</option>
+                                  <option value="Winter Snowshoeing">Winter Snowshoeing</option>
+                                  <option value="Etna Wine Tasting">Etna Wine Tasting</option>
+                                  <option value="Alcantara Body Rafting">Alcantara Body Rafting</option>
+                                  <option value="Altro">Altro / Personalizzato</option>
+                              </select>
+                              <label class="block text-xs text-gray-500 uppercase font-bold mt-2 ml-1 peer-focus:text-magma transition">Esperienza</label>
+                          </div>
+                      </div>
+                      
+                      <button type="submit" class="w-full bg-gradient-to-r from-magma to-red-700 text-white font-black uppercase tracking-widest py-5 rounded-xl hover:shadow-[0_0_30px_rgba(255,69,0,0.4)] transition-all duration-300 transform hover:-translate-y-1 mt-4">
+                        Invia Richiesta
+                      </button>
+                      
+                      <div id="formMsg" class="hidden text-center p-3 bg-green-900/20 border border-green-500/30 rounded-lg text-green-400 font-bold text-sm">
+                        <i class="fas fa-check-circle mr-2"></i> Richiesta ricevuta! Ti contatteremo a breve.
+                      </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-16 border-t border-gray-900 text-sm">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+          
+          <!-- Brand -->
+          <div class="md:w-1/3">
+             <div class="flex items-center space-x-3 mb-6">
+                <span class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-600 to-red-700"></span>
+                <span class="text-lg font-extrabold text-white tracking-widest">ETNA EXCURTION</span>
+             </div>
+             <p class="text-gray-500 leading-relaxed mb-6">
+               Divisione Luxury ed Extreme di Dream Island Tour Operator. <br>
+               Autorizzazione Regionale D.D.S. n. 2345/S9
+             </p>
+             <div class="text-gray-600 text-xs">
+               &copy; Dream Island LTD 2017 – 2025. All Rights Reserved. <br>
+               P.IVA 12345678901
+             </div>
+          </div>
+
+          <!-- Links -->
+          <div class="md:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-8">
+             <div>
+                <h4 class="text-white font-bold uppercase mb-4 tracking-wider">Esplora</h4>
+                <ul class="space-y-2 text-gray-500">
+                   <li><a href="#" class="hover:text-magma transition">Etna Nord</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Etna Sud</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Gole Alcantara</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Vini Vulcanici</a></li>
+                </ul>
+             </div>
+             <div>
+                <h4 class="text-white font-bold uppercase mb-4 tracking-wider">Supporto</h4>
+                <ul class="space-y-2 text-gray-500">
+                   <li><a href="#" class="hover:text-magma transition">FAQ & Meteo</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Cosa Portare</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Privacy Policy</a></li>
+                   <li><a href="#" class="hover:text-magma transition">Termini & Condizioni</a></li>
+                </ul>
+             </div>
+             <div>
+                 <h4 class="text-white font-bold uppercase mb-4 tracking-wider">Pagamenti Sicuri</h4>
+                 <div class="flex gap-3 text-2xl text-gray-600">
+                    <i class="fab fa-cc-visa hover:text-white transition"></i>
+                    <i class="fab fa-cc-mastercard hover:text-white transition"></i>
+                    <i class="fab fa-cc-paypal hover:text-white transition"></i>
+                    <i class="fab fa-apple-pay hover:text-white transition"></i>
+                 </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- WIDGET SIDEBAR -->
+    <div id="bookingSidebar" class="fixed right-0 top-0 h-full w-full md:w-[450px] bg-[#0a0a0a]/95 backdrop-blur-xl z-[1000] transform translate-x-full transition-transform duration-500 shadow-[0_0_50px_rgba(0,0,0,0.8)] border-l border-white/10 overflow-y-auto">
+      <div class="p-8">
+          <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
+              <h3 class="text-xl font-black text-white uppercase tracking-wider">Prenotazione<br>Rapida</h3>
+              <button id="closeSidebar" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-magma hover:bg-white/10 transition"><i class="fas fa-times"></i></button>
+          </div>
+          
+          <div id="sidebarDetails" class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl mb-8 border border-magma/20 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-20 h-20 bg-magma/10 blur-[30px] rounded-full"></div>
+              <p class="text-xs text-magma font-bold uppercase mb-1">Stai visualizzando:</p>
+              <h4 id="selectedExcursionTitle" class="text-xl font-black text-white leading-tight">Consulenza Generale</h4>
+          </div>
+
+          <form id="bookingFormSidebar" class="space-y-6">
+              <input type="hidden" id="escursioneHidden" name="escursione">
+              
+              <div class="space-y-1">
+                 <label class="text-xs text-gray-500 font-bold uppercase">Nome</label>
+                 <input type="text" id="nomeSidebar" required class="w-full bg-[#111] border-b border-gray-700 focus:border-magma text-white p-3 outline-none transition">
+              </div>
+
+              <div class="space-y-1">
+                 <label class="text-xs text-gray-500 font-bold uppercase">Telefono</label>
+                 <input type="tel" id="telSidebar" required class="w-full bg-[#111] border-b border-gray-700 focus:border-magma text-white p-3 outline-none transition">
+              </div>
+
+              <div class="space-y-1">
+                 <label class="text-xs text-gray-500 font-bold uppercase">Data</label>
+                 <input type="date" id="dataSidebar" required class="w-full bg-[#111] border-b border-gray-700 focus:border-magma text-white p-3 outline-none transition text-gray-300">
+              </div>
+              
+              <div class="space-y-1">
+                  <label class="text-xs text-gray-500 font-bold uppercase">Escursione</label>
+                  <select id="escursioneSelectSidebar" class="w-full bg-[#111] border-b border-gray-700 focus:border-magma text-white p-3 outline-none transition appearance-none">
+                      <option value="" disabled selected>Scegli...</option>
+                      <option value="Etna Summit Craters">Etna Summit Craters</option>
+                      <option value="Etna & Alcantara">Etna & Alcantara</option>
+                      <option value="Jeep Tour 4x4">Jeep Tour 4x4</option>
+                      <option value="Sunset Trekking">Sunset Trekking</option>
+                      <option value="Winter Snowshoeing">Winter Snowshoeing</option>
+                      <option value="Wine Tasting">Wine Tasting</option>
+                      <option value="Alcantara Body Rafting">Alcantara Body Rafting</option>
+                      <option value="Altro">Altro / Info</option>
+                  </select>
+              </div>
+
+              <button type="submit" class="w-full btn-magma text-white py-4 rounded-xl text-sm font-black uppercase tracking-widest mt-4 shadow-lg">Invia Richiesta</button>
+              <p class="text-[10px] text-gray-600 text-center mt-4">Un operatore ti contatterà su WhatsApp o Email entro 30 minuti.</p>
+          </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script>
+    // Funzione globale per precompilare la sidebar
+    function prefillSelect(excursionName) {
+        const sidebar = document.getElementById('bookingSidebar');
+        const select = document.getElementById('escursioneSelectSidebar');
+        const title = document.getElementById('selectedExcursionTitle');
+        const hidden = document.getElementById('escursioneHidden');
+        
+        // Imposta valori
+        select.value = excursionName;
+        hidden.value = excursionName;
+        title.innerText = excursionName;
+        
+        // Apri sidebar
+        sidebar.classList.remove('translate-x-full');
+        document.body.classList.add('no-scroll');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Navbar Scroll Effect
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) {
+              navbar.classList.add('bg-black/95', 'shadow-lg');
+          } else {
+              navbar.classList.remove('bg-black/95', 'shadow-lg');
+          }
+      });
+
+      // 2. Menu Mobile
+      const navToggle = document.getElementById('navToggle');
+      const navMobile = document.getElementById('navMobile');
+      const body = document.body;
+      
+      const toggleMenu = () => {
+        navMobile.classList.toggle('translate-x-full');
+        navMobile.classList.toggle('translate-x-0');
+        body.classList.toggle('no-scroll');
+        
+        // Anima hamburger
+        const spans = navToggle.querySelectorAll('span');
+        if (navMobile.classList.contains('translate-x-0')) {
+             spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+             spans[1].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+             spans[0].style.transform = 'none';
+             spans[1].style.transform = 'none';
+        }
+      };
+      
+      if(navToggle) navToggle.addEventListener('click', toggleMenu);
+      document.querySelectorAll('#navMobile a').forEach(l => l.addEventListener('click', toggleMenu));
+
+      // 3. Sidebar Logic
+      const sidebar = document.getElementById('bookingSidebar');
+      const closeBtn = document.getElementById('closeSidebar');
+      const openCTAs = document.querySelectorAll('#openBookingCTA');
+      
+      const closeSidebarFn = () => {
+          sidebar.classList.add('translate-x-full');
+          body.classList.remove('no-scroll');
+      };
+      
+      closeBtn.addEventListener('click', closeSidebarFn);
+      
+      openCTAs.forEach(btn => btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('selectedExcursionTitle').innerText = "Consulenza Generale";
+          sidebar.classList.remove('translate-x-full');
+          body.classList.add('no-scroll');
+      }));
+
+      // 4. Reveal Animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { 
+            if(entry.isIntersecting) {
+                entry.target.classList.add('active'); 
+                // Disconnetti per performance una volta rivelato
+                observer.unobserve(entry.target);
+            }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // 5. Form Handling (Mailto simulation)
+      const handleForm = (formId, btnTextId) => {
+          const form = document.getElementById(formId);
+          if(!form) return;
+          
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            const originalText = btn.innerText;
+            
+            // Dati
+            const name = form.querySelector('input[type="text"]').value;
+            const exc = form.querySelector('select').value;
+            
+            btn.innerText = "INVIO IN CORSO...";
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            
+            // Simulazione invio
+            const mailto = `mailto:info@dreamisland.it?subject=Richiesta: ${exc}&body=Cliente: ${name}%0D%0AEscursione: ${exc}`;
+            
+            setTimeout(() => {
+                window.location.href = mailto;
+                btn.innerText = "INVIATO!";
+                
+                // Reset UI
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    form.reset();
+                    if(formId === 'bookingFormSidebar') closeSidebarFn();
+                    if(formId === 'bookingForm') {
+                        const msg = document.getElementById('formMsg');
+                        msg.classList.remove('hidden');
+                        setTimeout(() => msg.classList.add('hidden'), 4000);
+                    }
+                }, 1500);
+            }, 800);
+          });
+      };
+
+      handleForm('bookingFormSidebar');
+      handleForm('bookingForm');
+      
+      // 6. Load More (Mock)
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if(loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', function() {
+              this.innerText = "Caricamento...";
+              setTimeout(() => {
+                  this.innerText = "Nessun'altra escursione disponibile al momento";
+                  this.classList.add('text-gray-700', 'cursor-default', 'border-none');
+              }, 1000);
+          });
+      }
+    });
+  </script>
+</body>
+</html>
