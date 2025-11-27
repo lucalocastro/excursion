@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  
+  <title>Etna Journal | Blog Ufficiale - ETNAXCUTION</title>
+  <meta name="description" content="Approfondimenti, guide e storie sul Vulcano Etna, le Gole Alcantara, la cultura del vino e il trekking in Sicilia. Il magazine di Etna Xcution." />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Fonts: Montserrat (Moderno) & Playfair Display (Eleganza) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <meta name="theme-color" content="#0a0a0a" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Montserrat', 'sans-serif'],
+          serif: ['Playfair Display', 'serif'],
+        },
+        extend: {
+          colors: {
+            magma: '#FF4500',
+            magmaLight: '#ff6b33',
+            lava: '#C0392B',
+            charcoal: '#050505',
+            gyg: '#FF5533',
+            tripadvisor: '#34E0A1',
+            google: '#4285F4',
+            surface: '#121212'
+          },
+          backgroundImage: {
+            'magma-gradient': 'linear-gradient(135deg, #FF4500 0%, #C0392B 100%)',
+          },
+          boxShadow: {
+            'glow': '0 0 30px rgba(255, 69, 0, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* --- STILI GLOBALI --- */
+    :root { --transition-smooth: 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    
+    body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #050505; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #FF4500; }
+
+    /* Gradient Text Animation */
+    .text-gradient-animate {
+        background: linear-gradient(to right, #FF4500, #ff8c00, #FF4500);
+        background-size: 200% auto;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: shine 4s linear infinite;
+    }
+    @keyframes shine { to { background-position: 200% center; } }
+
+    /* Glassmorphism Card (Articoli) */
+    .glass-card {
+        background: rgba(20, 20, 20, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        transition: all 0.4s;
+    }
+    .glass-card:hover {
+        border-color: #FF4500;
+        box-shadow: 0 0 20px rgba(255, 69, 0, 0.2);
+        transform: translateY(-5px);
+    }
+    
+    /* Sidebar Tag Style */
+    .tag-link {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        margin: 0.3rem 0.3rem 0 0;
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #ddd;
+        transition: all 0.3s;
+    }
+    .tag-link:hover {
+        background: #FF4500;
+        border-color: #FF4500;
+        color: white;
+    }
+
+    /* Reveal Animation */
+    .reveal-hidden { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+    .reveal-active { opacity: 1; transform: translateY(0); }
+
+    /* Sticky Mobile Bar */
+    .mobile-cta {
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,69,0,0.3);
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+
+<body class="antialiased selection:bg-magma selection:text-white">
+
+  <!-- NAVBAR (STANDARD) -->
+  <header class="fixed top-0 inset-x-0 z-50 h-20 flex items-center transition-all duration-300 border-b border-white/5 bg-black/80 backdrop-blur-md" id="navbar">
+    <div class="container mx-auto px-6 flex justify-between items-center w-full">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="relative w-10 h-10">
+            <div class="absolute inset-0 bg-magma rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500"></div>
+            <div class="relative w-full h-full bg-gradient-to-br from-magma to-lava rounded-full border border-white/20"></div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-black text-white tracking-[0.2em] group-hover:text-magma transition duration-300">ETNA<span class="font-light">XCUTION</span></span>
+          <span class="text-[9px] uppercase text-gray-400 tracking-widest">Premium Tours Sicily</span>
+        </div>
+      </a>
+      
+      <nav class="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
+        <a href="index.html#escursioni" class="hover:text-magma transition duration-300">Escursioni</a>
+        <a href="#blog-posts" class="text-magma transition duration-300">Journal</a>
+        <a href="index.html#reviews" class="hover:text-magma transition duration-300">Recensioni</a>
+        <button class="bg-white text-black px-6 py-2.5 rounded-full hover:bg-magma hover:text-white transition duration-300 font-black shadow-lg shadow-white/10 hover:shadow-magma/50 open-booking">
+            Prenota Ora
+        </button>
+      </nav>
+
+      <button class="lg:hidden text-2xl text-white focus:outline-none" id="navToggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU (STANDARD) -->
+  <div class="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8" id="navMobile">
+    <a href="index.html#escursioni" class="text-4xl font-black text-white hover:text-magma mobile-link">ESCURSIONI</a>
+    <a href="#blog-posts" class="text-4xl font-black text-magma mobile-link">JOURNAL</a>
+    <a href="index.html#reviews" class="text-4xl font-black text-white hover:text-magma mobile-link">RECENSIONI</a>
+    <button class="text-2xl text-magma border border-magma px-8 py-3 rounded-full mobile-link open-booking" id="mobileBookingLink">PRENOTA ORA</button>
+    <button id="closeNavMobile" class="absolute top-6 right-6 text-white text-3xl"><i class="fas fa-times"></i></button>
+  </div>
+
+  <main class="pt-20">
+    
+    <!-- 1. HERO BLOG MAGAZINE -->
+    <section class="relative pt-24 pb-16 md:pt-32 md:pb-24 bg-surface flex items-center justify-center overflow-hidden border-b border-white/5">
+        <div class="absolute inset-0 z-0 opacity-10" style="background-image: url('https://placehold.co/1920x400/121212/FF4500?text=BLOG+BACKGROUND'); filter: grayscale(100%);"></div>
+        <div class="container relative z-10 px-6 text-center reveal-hidden">
+            <h1 class="text-6xl md:text-8xl font-serif font-bold italic text-white mb-2 tracking-tighter">
+                Etna <span class="text-gradient-animate">Journal</span>
+            </h1>
+            <h2 class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                Storie, guide e segreti dal vulcano attivo più alto d'Europa.
+            </h2>
+        </div>
+    </section>
+
+    <!-- 2. CONTENUTO BLOG E SIDEBAR -->
+    <section id="blog-posts" class="py-20 bg-charcoal">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                
+                <!-- COLONNA ARTICOLI PRINCIPALE (LG:COL-SPAN-8) -->
+                <div class="lg:col-span-9 xl:col-span-8">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-magmaLight mb-10 reveal-hidden">Articoli in Vetrina</h3>
+            
+                    <!-- INIZIO: AREA PRINCIPALE ASIMMETRICA (COPIA/INCOLLA QUI SOTTO PER NUOVI ARTICOLI PRINCIPALI) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-12" id="showcase-posts-grid">
+                        
+                        <!-- MODULO 1: ARTICOLO PRINCIPALE (FULL WIDTH) -->
+                        <a href="blog_post_template.html" class="lg:col-span-2 glass-card rounded-2xl overflow-hidden shadow-card group reveal-hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2">
+                                <div class="h-64 md:h-full bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1548231776-664f9b88417c?auto=format&fit=crop&q=80&w=600');">
+                                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition"></div>
+                                    <span class="absolute top-4 left-4 bg-magma text-white text-xs px-3 py-1 rounded-full font-bold uppercase">Vulcano & Geologia</span>
+                                </div>
+                                <div class="p-6 md:p-8 flex flex-col justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-2">15 Ottobre 2025 • 8 min lettura</p>
+                                        <h4 class="font-serif italic text-3xl font-bold text-white group-hover:text-magmaLight transition mb-4">
+                                            L'Ultima Eruzione: Cosa ci Insegna il Magma
+                                        </h4>
+                                        <p class="text-gray-400 text-sm">
+                                            Un'analisi dettagliata degli eventi vulcanici più recenti e delle forze geologiche che plasmano il paesaggio etneo.
+                                        </p>
+                                    </div>
+                                    <span class="text-magma font-bold text-sm mt-4 inline-block">Leggi l'articolo <i class="fas fa-arrow-right ml-2"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- MODULO 2: ARTICOLO SECONDARIO (SINGLE COLUMN) -->
+                        <a href="#" class="glass-card rounded-2xl overflow-hidden shadow-card group reveal-hidden">
+                            <div class="h-48 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=600');">
+                                <span class="absolute top-4 left-4 bg-yellow-600 text-white text-xs px-3 py-1 rounded-full font-bold uppercase">Cultura & Vino</span>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-sm text-gray-500 mb-2">2 Settembre 2025</p>
+                                <h4 class="font-bold text-xl text-white group-hover:text-magma transition mb-3">
+                                    Le Cantine Nascoste del Versante Nord
+                                </h4>
+                                <p class="text-gray-400 text-sm">
+                                    Viaggio tra i migliori produttori di vino vulcanico, una vera eccellenza DOC.
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- FINE: AREA PRINCIPALE ASIMMETRICA -->
+
+                    
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-magmaLight mb-10 reveal-hidden">Ultimi Post</h3>
+
+                    <!-- INIZIO: GRIGLIA ARTICOLI STANDARD (3 COLONNE) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="standard-posts-grid">
+                        
+                        <!-- MODULO 3: ARTICOLO STANDARD -->
+                        <a href="#" class="glass-card rounded-xl overflow-hidden group reveal-hidden">
+                            <div class="h-40 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1596395811342-6e27170a312d?auto=format&fit=crop&w=600&q=80');">
+                                <span class="absolute top-4 left-4 bg-teal-600 text-white text-xs px-3 py-1 rounded-full font-bold uppercase">Natura & Trekking</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="font-bold text-lg text-white group-hover:text-magma transition mb-1">
+                                    Perché l'acqua dell'Alcantara è così gelida?
+                                </h4>
+                                <p class="text-gray-500 text-xs">Un mistero geologico e climatico.</p>
+                            </div>
+                        </a>
+                        
+                        <!-- MODULO 4: ARTICOLO STANDARD -->
+                        <a href="#" class="glass-card rounded-xl overflow-hidden group reveal-hidden">
+                            <div class="h-40 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1533230607842-8c1d550000a6?auto=format&fit=crop&q=80&w=600');">
+                                <span class="absolute top-4 left-4 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold uppercase">Guide Turistiche</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="font-bold text-lg text-white group-hover:text-magma transition mb-1">
+                                    Come scegliere il tuo fuoristrada 4x4 sull'Etna
+                                </h4>
+                                <p class="text-gray-500 text-xs">I mezzi migliori per l'off-road sicuro.</p>
+                            </div>
+                        </a>
+
+                        <!-- MODULO 5: ARTICOLO STANDARD -->
+                        <a href="#" class="glass-card rounded-xl overflow-hidden group reveal-hidden">
+                            <div class="h-40 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=600');">
+                                <span class="absolute top-4 left-4 bg-magma text-white text-xs px-3 py-1 rounded-full font-bold uppercase">Geologia</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="font-bold text-lg text-white group-hover:text-magma transition mb-1">
+                                    Grotta dei Ladroni: storia e leggenda
+                                </h4>
+                                <p class="text-gray-500 text-xs">Esploriamo i tunnel di scorrimento lavico.</p>
+                            </div>
+                        </a>
+                        
+                        <!-- QUI PUOI COPIARE E INCOLLARE I MODULI 'ARTICOLO STANDARD' PER AGGIUNGERE NUOVI POST -->
+                        
+                    </div>
+                    <!-- FINE: GRIGLIA ARTICOLI STANDARD -->
+                    
+                    <div class="text-center mt-16 reveal-hidden">
+                        <button class="text-gray-500 hover:text-magma text-sm uppercase tracking-widest font-bold border-b border-gray-600 pb-1 transition">Carica Altri Articoli</button>
+                    </div>
+
+                </div>
+
+                <!-- COLONNA SIDEBAR (LG:COL-SPAN-4) -->
+                <div class="lg:col-span-3 xl:col-span-4 lg:sticky lg:top-24 h-fit">
+                    
+                    <!-- Box Ricerca (Opzionale) -->
+                    <div class="mb-10 p-6 glass-card rounded-xl reveal-hidden">
+                        <h4 class="text-lg font-bold text-white mb-4 border-b border-white/10 pb-2">Cerca nel Journal</h4>
+                        <input type="text" placeholder="Es. Gole Alcantara, Eruzione 2002..." class="w-full bg-[#1e1e1e] border border-white/10 text-white p-3 rounded-lg focus:border-magma outline-none transition">
+                    </div>
+
+                    <!-- Box Categorie -->
+                    <div class="mb-10 p-6 glass-card rounded-xl reveal-hidden">
+                        <h4 class="text-lg font-bold text-white mb-4 border-b border-magma/50 pb-2">Categorie</h4>
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-magma transition flex justify-between items-center">Geologia & Scienza <span class="text-xs text-gray-600">(4)</span></a></li>
+                            <li><a href="#" class="hover:text-magma transition flex justify-between items-center">Natura & Trekking <span class="text-xs text-gray-600">(7)</span></a></li>
+                            <li><a href="#" class="hover:text-magma transition flex justify-between items-center">Cultura & Vino <span class="text-xs text-gray-600">(3)</span></a></li>
+                            <li><a href="#" class="hover:text-magma transition flex justify-between items-center">Guide Turistiche <span class="text-xs text-gray-600">(5)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Box Tag Popolari -->
+                    <div class="mb-10 p-6 glass-card rounded-xl reveal-hidden">
+                        <h4 class="text-lg font-bold text-white mb-4 border-b border-magma/50 pb-2">Tag Popolari</h4>
+                        <div class="flex flex-wrap -m-1">
+                            <a href="#" class="tag-link">4x4</a>
+                            <a href="#" class="tag-link">Grotta</a>
+                            <a href="#" class="tag-link">Vino</a>
+                            <a href="#" class="tag-link">Sentieri</a>
+                            <a href="#" class="tag-link">Etna Sud</a>
+                            <a href="#" class="tag-link">Alcantara</a>
+                            <a href="#" class="tag-link">Eruzione</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SOCIAL PROOF SECTION (STANDARD) -->
+    <section id="reviews" class="py-24 bg-surface border-t border-white/5 relative overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-magma/5 rounded-full blur-[100px]"></div>
+
+        <div class="container mx-auto px-6 relative z-10 reveal-hidden">
+            
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-4">La Nostra Reputazione</h2>
+                <div class="w-24 h-1 bg-magma mx-auto mb-6"></div>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                    <div class="text-center">
+                        <span class="block text-6xl md:text-7xl font-black text-white">4.9</span>
+                        <div class="text-yellow-400 text-xl my-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <span class="text-gray-500 text-sm uppercase tracking-widest">Media Voti</span>
+                    </div>
+                    
+                    <div class="hidden md:block w-px h-24 bg-white/10"></div>
+                    
+                    <div class="text-center">
+                        <span class="block text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-magma to-yellow-500">2.150+</span>
+                        <div class="flex justify-center gap-2 mt-2">
+                            <i class="fab fa-google text-gray-400"></i>
+                            <i class="fab fa-tripadvisor text-gray-400"></i>
+                            <i class="fas fa-mountain text-gray-400"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm uppercase tracking-widest mt-1">Recensioni Totali</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-gray-400 text-lg mb-6">Leggi le recensioni complete sui nostri partner:</p>
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <a href="https://g.page/dreamisland" target="_blank" class="px-6 py-3 rounded-full text-sm font-bold border border-white/20 hover:bg-white/10 text-white transition flex items-center gap-2"><i class="fab fa-google"></i> Google</a>
+                    <a href="https://www.tripadvisor.it/Attraction_Review-g660768-d15052054-Reviews-Dream_Island-Linguaglossa_Province_of_Catania_Sicily.html" target="_blank" class="bg-tripadvisor px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg hover:opacity-80 transition"><i class="fab fa-tripadvisor"></i> TripAdvisor</a>
+                    <a href="https://www.getyourguide.it/dream-island-s80013/" target="_blank" class="bg-gyg px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg hover:opacity-80 transition">GetYourGuide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MOBILE STICKY CTA (STANDARD) -->
+    <div class="mobile-cta lg:hidden flex justify-between items-center px-6 py-4">
+        <div>
+            <p class="text-[10px] text-gray-400 uppercase font-bold">Inizia la tua avventura</p>
+            <p class="text-2xl font-black text-white">Contattaci</p>
+        </div>
+        <button class="bg-magma text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest shadow-lg open-booking">
+            Prenota
+        </button>
+    </div>
+
+    <!-- FOOTER SIMPLE (STANDARD) -->
+    <footer class="bg-black py-12 border-t border-white/5 text-center pb-32 lg:pb-12">
+        <div class="text-2xl font-black text-white tracking-[0.2em] mb-4">ETNA<span class="text-magma">XCUTION</span></div>
+        <p class="text-gray-500 text-xs uppercase tracking-widest mb-8">Luxury Division of Dream Island Tour Operator</p>
+        <div class="flex justify-center gap-6 text-gray-400">
+            <i class="fab fa-instagram hover:text-magma cursor-pointer transition"></i>
+            <i class="fab fa-facebook hover:text-magma cursor-pointer transition"></i>
+            <i class="fab fa-whatsapp hover:text-magma cursor-pointer transition"></i>
+        </div>
+        <p class="text-gray-600 text-[10px] mt-8">© 2025 All Rights Reserved.</p>
+    </footer>
+
+    <!-- SIDEBAR FORM OVERLAY/WIDGET (STANDARD) -->
+    <div id="bookingOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="bookingSidebar" class="fixed right-0 top-0 h-full w-full md:w-[500px] bg-[#0a0a0a] z-[70] transform translate-x-full transition-transform duration-500 shadow-2xl border-l border-white/10 flex flex-col">
+        
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-[#0f0f0f]">
+            <h3 class="text-xl font-bold text-white uppercase tracking-wider">Richiedi Disponibilità</h3>
+            <button id="closeSidebar" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="p-8 overflow-y-auto flex-grow">
+            <!-- Selected Tour Summary (Adattato) -->
+            <div class="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl border border-magma/30 mb-8 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-magma/10 rounded-full blur-2xl group-hover:bg-magma/20 transition duration-700"></div>
+                <p class="text-xs text-magma font-bold uppercase mb-1">Richiesta dal Blog:</p>
+                <h4 class="text-2xl font-black text-white leading-tight mb-2">Info & Prenotazioni</h4>
+                <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-comment-dots text-green-500"></i> Risposta via Chat o Telefono
+                </div>
+            </div>
+
+            <form id="bookingForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-xs text-gray-500 font-bold uppercase ml-1">Il tuo Nome</label>
+                    <input type="text" id="nameInput" required class="w-full bg-[#151515] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition" placeholder="Mario Rossi">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-500 font-bold uppercase ml-1">Data (Opzionale)</label>
+                        <input type="date" id="dateInput" class="w-full bg-[#151515] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition text-gray-300">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-500 font-bold uppercase ml-1">Persone</label>
+                        <select id="peopleInput" class="w-full bg-[#151515] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5+">5+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs text-gray-500 font-bold uppercase ml-1">Telefono / WhatsApp</label>
+                    <input type="tel" id="telInput" required class="w-full bg-[#151515] border border-white/10 focus:border-magma text-white p-4 rounded-xl outline-none transition" placeholder="+39 ...">
+                </div>
+
+                <button type="submit" class="w-full bg-white text-black py-5 rounded-xl text-sm font-black uppercase tracking-widest mt-4 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-magma hover:text-white hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] transition duration-300 transform hover:-translate-y-1">
+                    Invia Richiesta
+                </button>
+                <p class="text-center text-[10px] text-gray-600 mt-4">Risposta garantita entro 30 minuti.</p>
+            </form>
+        </div>
+    </div>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // 1. REVEAL ON SCROLL
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-hidden').forEach(el => observer.observe(el));
+
+        // 2. MOBILE NAV
+        const navToggle = document.getElementById('navToggle');
+        const navMobile = document.getElementById('navMobile');
+        const closeNav = document.getElementById('closeNavMobile');
+        const mobileClosureElements = document.querySelectorAll('.mobile-link, #mobileBookingLink');
+
+        function toggleNav() {
+            if (!navMobile) return;
+            navMobile.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        }
+        if(navToggle) navToggle.addEventListener('click', toggleNav);
+        if(closeNav) closeNav.addEventListener('click', toggleNav);
+        
+        mobileClosureElements.forEach(l => l.addEventListener('click', (e) => {
+            if (!l.classList.contains('open-booking')) { 
+                toggleNav(); 
+            } else {
+                toggleNav(); 
+                setTimeout(openBooking, 300);
+            }
+        }));
+
+        // 3. BOOKING SIDEBAR
+        const bookingOverlay = document.getElementById('bookingOverlay');
+        const bookingSidebar = document.getElementById('bookingSidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const openButtons = document.querySelectorAll('.open-booking');
+
+        function openBooking() {
+            if (!bookingOverlay || !bookingSidebar) return;
+            bookingOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                bookingOverlay.classList.remove('opacity-0');
+                bookingSidebar.classList.remove('translate-x-full');
+            }, 10);
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeBooking() {
+            if (!bookingOverlay || !bookingSidebar) return;
+            bookingOverlay.classList.add('opacity-0');
+            bookingSidebar.classList.add('translate-x-full');
+            setTimeout(() => {
+                bookingOverlay.classList.add('hidden');
+            }, 300);
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        openButtons.forEach(btn => btn.addEventListener('click', openBooking));
+        if(closeSidebar) closeSidebar.addEventListener('click', closeBooking);
+        if(bookingOverlay) bookingOverlay.addEventListener('click', closeBooking);
+
+        // 4. FORM SUBMIT (Mock)
+        const form = document.getElementById('bookingForm');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = 'INVIO...';
+                btn.classList.add('opacity-50');
+                
+                setTimeout(() => {
+                    const name = document.getElementById('nameInput').value;
+                    const date = document.getElementById('dateInput').value;
+                    const phone = document.getElementById('telInput').value;
+                    
+                    const subject = `Richiesta Info dal Blog - ${name}`;
+                    const bodyMail = `Nome: ${name}\nTelefono: ${phone}\nData Richiesta: ${date || 'Non specificata'}\n\nRichiesta generica dal Blog.`;
+                    
+                    // Redirect mailto
+                    window.location.href = `mailto:info@dreamisland.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyMail)}`;
+                    
+                    btn.innerText = 'RICHIESTA INVIATA!';
+                    setTimeout(() => {
+                        closeBooking();
+                        btn.innerText = originalText;
+                        btn.classList.remove('opacity-50');
+                        form.reset();
+                    }, 1000);
+                }, 1000);
+            });
+        }
+
+
+        // 5. Navbar Scroll Blur
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(!nav) return;
+            if(window.scrollY > 50) {
+                nav.classList.add('shadow-xl', 'bg-black/95');
+                nav.classList.remove('bg-black/80');
+            } else {
+                nav.classList.remove('shadow-xl', 'bg-black/95');
+                nav.classList.add('bg-black/80');
+            }
+        });
+    });
+  </script>
+</body>
+</html>
